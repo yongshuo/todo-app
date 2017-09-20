@@ -1,19 +1,3 @@
-import React, {Component} from 'react'
-import {NavigatorIOS} from 'react-native'
-import TodoListScene from './scenes/TodoListScene'
+import AppRoot from './src/AppRoot'
 
-export default class App extends Component {
-
-  render() {
-    return (
-      <NavigatorIOS
-        initialRoute={{
-          index: 0,
-          title: 'Todo List',
-          component: TodoListScene
-        }}
-        style={{flex: 1}}
-      />
-    )
-  }
-}
+export default AppRoot
