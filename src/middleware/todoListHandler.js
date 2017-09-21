@@ -1,5 +1,6 @@
 import {Actions} from '../actions'
 import {AsyncStorage} from 'react-native'
+import moment from 'moment'
 import {
   loadTodoListSuccess,
   loadTodoListFailure
@@ -13,12 +14,28 @@ function retrieveTodoList(store) {
       if (todoList != null) {
         store.dispatch(loadTodoListSuccess(JSON.parse(data)))
       } else {
-        store.dispatch(loadTodoListSuccess([]))
+        const sampleData = [
+          {
+            completed: false,
+            text: 'Okay I will do it',
+            id: 1
+          }
+        ]
+        store.dispatch(loadTodoListSuccess(sampleData))
       }
     })
     .catch(error => {
       store.dispatch(loadTodoListFailure())
     })
+}
+
+function addTodo(todo) {
+    console.log(todo)
+  // get key from todo
+  const key = `todoApp@${moment(todo.dueTime).format('ddd, DD MMM YYYY')}`
+
+  // get current Todos
+
 }
 
 export default store => next => action => {
@@ -27,6 +44,9 @@ export default store => next => action => {
   switch (action.type) {
     case Actions.LOAD_TODO_LIST:
       retrieveTodoList(store)
+      break
+    case Actions.ADD_TODO:
+      addTodo(action.todo)
       break
   }
 }

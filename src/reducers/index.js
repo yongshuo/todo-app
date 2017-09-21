@@ -1,16 +1,13 @@
 import {Actions} from '../actions'
 import {combineReducers} from 'redux'
 
-
-function todoListFilter(state = 'VIEW_ALL', action) {
-  switch (action.type) {
-  case Actions.CHANGE_TODO_LIST_FILTER:
-    return action.filter
-  default:
-    return state
-  }
-}
-
+/**
+* {
+*   date1: [],
+*   date2: []
+* }
+*
+*/
 function todoListLoading(state = false, action) {
   switch (action.type) {
   case Actions.LOAD_TODO_LIST:
@@ -107,7 +104,6 @@ function todoList(state = [{text: 'TODO 1', completed: false}], action) {
 }
 
 const rootReducer = combineReducers({
-  todoListFilter,
   todoListLoading,
   todoListLoadFailure,
   addingTodo,

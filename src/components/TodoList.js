@@ -9,29 +9,28 @@ export default class TodoList extends Component {
 
   render() {
     return (
-        <List>
-          {
-            this.props.todoList.map((todo, index) => {
-              return (
-                <ListItem key={index} onPress={() => this.props.toggleTodo(todo.id)}>
-                  <CheckBox
-                    color="green"
-                    checked={todo.completed}
-                    onPress={() => this.props.toggleTodo(todo.id)}
-                  />
-                  <Body>
-                    <Text style={todo.completed ? StyleSheet.flatten(styles.crossText) : StyleSheet.flatten('')}>{todo.text}</Text>
-                  </Body>
-                </ListItem>
-              )
-            })
-          }
-          {this.props.todoList.length == 0 &&
-            <Body>
-              <Text style={StyleSheet.flatten(styles.noNote)}>There is no note available.</Text>
-            </Body>
-          }
-        </List>
+      <List>
+        <ListItem itemDivider>
+          <Text>Past</Text>
+        </ListItem>
+        {
+          this.props.todoList.map(todo => {
+            return (
+              <ListItem key={todo.id} onPress={() => this.props.toggleTodo(todo.id)}>
+                <CheckBox
+                  color="green"
+                  checked={todo.completed}
+                  onPress={() => this.props.toggleTodo(todo.id)}
+                />
+                <Body>
+                  <Text style={todo.completed ? StyleSheet.flatten(styles.crossText) : StyleSheet.flatten('')}>{todo.text}</Text>
+                </Body>
+              </ListItem>
+            )
+          })
+        }
+
+      </List>
     )
   }
 }

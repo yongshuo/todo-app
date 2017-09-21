@@ -2,7 +2,6 @@ export const Actions = {
   LOAD_TODO_LIST: 'LOAD_TODO_LIST',
   LOAD_TODO_LIST_SUCCESS: 'LOAD_TODO_LIST_SUCCESS',
   LOAD_TODO_LIST_FAILURE: 'LOAD_TODO_LIST_FAILURE',
-  CHANGE_TODO_LIST_FILTER: 'CHANGE_TODO_LIST_FILTER',
   ADD_TODO: 'ADD_TODO',
   ADD_TODO_SUCCESS: 'ADD_TODO_SUCCESS',
   ADD_TODO_FAILURE: 'ADD_TODO_FAILURE',
@@ -27,13 +26,6 @@ export function loadTodoListSuccess(todoList) {
 export function loadTodoListFailure() {
   return {
     type: Actions.LOAD_TODO_LIST_FAILURE
-  }
-}
-
-export function changeTodoListFilter(filter) {
-  return {
-    type: Actions.CHANGE_TODO_LIST_FILTER,
-    filter
   }
 }
 
