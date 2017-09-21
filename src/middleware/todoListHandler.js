@@ -3,7 +3,9 @@ import {AsyncStorage} from 'react-native'
 import moment from 'moment'
 import {
   loadTodoListSuccess,
-  loadTodoListFailure
+  loadTodoListFailure,
+  addTodoSuccess,
+  addTodoFailure
 } from '../actions'
 
 const storageKey = 'todoApp'
@@ -12,16 +14,9 @@ function retrieveTodoList(store) {
   AsyncStorage.getItem(storageKey)
     .then(todoList => {
       if (todoList != null) {
-        store.dispatch(loadTodoListSuccess(JSON.parse(data)))
+        store.dispatch(loadTodoListSuccess(JSON.parse(todoList)))
       } else {
-        const sampleData = [
-          {
-            completed: false,
-            text: 'Okay I will do it',
-            id: 1
-          }
-        ]
-        store.dispatch(loadTodoListSuccess(sampleData))
+        store.dispatch(loadTodoListSuccess({}))
       }
     })
     .catch(error => {
@@ -29,13 +24,30 @@ function retrieveTodoList(store) {
     })
 }
 
-function addTodo(todo) {
-    console.log(todo)
+function addTodo(store, action) {
+  let {
+    todoList
+  } = store.getState()
+
   // get key from todo
-  const key = `todoApp@${moment(todo.dueTime).format('ddd, DD MMM YYYY')}`
+  const key = moment(action.todo.dueTime).format('ddd, DD MMM YYYY')
 
-  // get current Todos
+  // set to empty array if key does not exists
+  if (!todoList.hasOwnProperty(key)) {
+    todoList[key] = []
+  }
 
+  // append new todo to current todo list
+  todoList[key].push(action.todo)
+
+  // Saving new todo list in storage
+  AsyncStorage.setItem(storageKey, JSON.stringify(todoList))
+    .then(done => {
+      store.dispatch(addTodoSuccess(key, action.todo))
+    })
+    .catch(error => {
+      store.dispatch(addTodoFailure())
+    })
 }
 
 export default store => next => action => {
@@ -46,7 +58,7 @@ export default store => next => action => {
       retrieveTodoList(store)
       break
     case Actions.ADD_TODO:
-      addTodo(action.todo)
+      addTodo(store, action)
       break
   }
 }

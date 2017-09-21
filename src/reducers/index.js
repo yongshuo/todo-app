@@ -1,13 +1,7 @@
 import {Actions} from '../actions'
 import {combineReducers} from 'redux'
+import {cloneTodoList} from '../utils/TodoHelper'
 
-/**
-* {
-*   date1: [],
-*   date2: []
-* }
-*
-*/
 function todoListLoading(state = false, action) {
   switch (action.type) {
   case Actions.LOAD_TODO_LIST:
@@ -80,24 +74,21 @@ function toggleTodoFailure(state = false, action) {
   }
 }
 
-function todoList(state = [{text: 'TODO 1', completed: false}], action) {
+function todoList(state = {}, action) {
+  let clone = {}
   switch (action.type) {
   case Actions.LOAD_TODO_LIST_SUCCESS:
     return action.todoList
   case Actions.ADD_TODO_SUCCESS:
-    return [
-      ...state,
-      action.todo
-    ]
+    clone = cloneTodoList(state)
+    clone[action.key].push(action.todo)
+
+    return clone
   case Actions.TOGGLE_TODO_SUCCESS:
-    return state.map((todo, index) => {
-      if (index == action.index) {
-        return Object.assign({}, todo, {
-          completed: !todo.completed
-        })
-      }
-      return todo
-    })
+    clone = cloneTodoList(state)
+    clone[action.key][action.index].completed = !state[action.key][action.index].completed
+
+    return clone
   default:
     return state
   }

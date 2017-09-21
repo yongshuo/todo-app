@@ -20,6 +20,7 @@ import {
 } from '../actions'
 import TodoList from '../components/TodoList'
 import AddTodoContainer from './AddTodoContainer'
+import {filterTodoList} from '../utils/TodoHelper'
 
 class TodoListContainer extends Component {
   constructor(props) {
@@ -48,25 +49,29 @@ class TodoListContainer extends Component {
   }
 
   render() {
+    const {
+      todoList
+    } = this.props
+
+    const allTodoList = filterTodoList(todoList)
+    const activeTodoList = filterTodoList(todoList, activeOnly = true)
+    
     return (
       <Container>
         <Header />
         <Tabs initialPage={0}>
           <Tab heading="All">
+            <TodoList
+              todoList={allTodoList}
+            />
           </Tab>
           <Tab heading="Active">
             <Content>
-              {this.props.todoListLoading &&
-                <Spinner color='black' />
-              }
-
               <TodoList
-                todoList={this.props.todoList}
+                todoList={activeTodoList}
                 toggleTodo={this.toggleTodo}
               />
             </Content>
-
-
           </Tab>
         </Tabs>
 

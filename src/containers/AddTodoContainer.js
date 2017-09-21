@@ -15,8 +15,7 @@ import {
   InputGroup,
   Textarea,
   Button,
-  Text,
-  Spinner
+  Text
 } from 'native-base'
 
 class AddTodoContainer extends Component {
@@ -62,9 +61,6 @@ class AddTodoContainer extends Component {
           </Body>
         </Header>
           <Content padder>
-            {this.props.addingTodo &&
-              <Spinner color="black" />
-            }
             <DatePicker
               title="Due Date"
               date={this.state.date}
@@ -96,12 +92,14 @@ class AddTodoContainer extends Component {
 function mapStateToProps(state, ownProps) {
   const {
     addingTodo,
-    addTodoFailure
+    addTodoFailure,
+    addTodoSuccess
   } = state
 
   return {
     addingTodo,
-    addTodoFailure
+    addTodoFailure,
+    addTodoSuccess
   }
 }
 

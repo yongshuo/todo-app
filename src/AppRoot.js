@@ -12,9 +12,11 @@ export default class AppRoot extends Component {
 
   render() {
     return (
-      <Provider store={this.store}>
-        <TodoApp />
-      </Provider>
+      <Root>
+        <Provider store={this.store}>
+          <TodoApp />
+        </Provider>
+      </Root>
     )
   }
 }
