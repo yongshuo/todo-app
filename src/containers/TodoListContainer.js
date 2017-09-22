@@ -26,6 +26,7 @@ class TodoListContainer extends Component {
   constructor(props) {
     super(props)
     this.navigateToAddTodoPage = this.navigateToAddTodoPage.bind(this)
+    this.toggleTodo = this.toggleTodo.bind(this)
   }
 
   componentWillMount() {
@@ -33,8 +34,9 @@ class TodoListContainer extends Component {
     actions.loadTodoList()
   }
 
-  toggleTodo() {
-
+  toggleTodo(uniqueId) {
+    const {actions} = this.props
+    actions.toggleTodo(uniqueId)
   }
 
   navigateToAddTodoPage() {
@@ -64,6 +66,7 @@ class TodoListContainer extends Component {
             <Content>
               <TodoList
                 todoList={allTodoList}
+                toggleTodo={this.toggleTodo}
               />
             </Content>
           </Tab>

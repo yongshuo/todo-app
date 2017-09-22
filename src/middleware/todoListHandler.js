@@ -5,7 +5,9 @@ import {
   loadTodoListSuccess,
   loadTodoListFailure,
   addTodoSuccess,
-  addTodoFailure
+  addTodoFailure,
+  toggleTodoSuccess,
+  toggleTodoFailure
 } from '../actions'
 
 const storageKey = 'todoApp'
@@ -16,7 +18,7 @@ function retrieveTodoList(store) {
       if (todoList != null) {
         store.dispatch(loadTodoListSuccess(JSON.parse(todoList)))
       } else {
-        store.dispatch(loadTodoListSuccess({}))
+        store.dispatch(loadTodoListSuccess([]))
       }
     })
     .catch(error => {
@@ -29,24 +31,36 @@ function addTodo(store, action) {
     todoList
   } = store.getState()
 
-  // get key from todo
-  const key = moment(action.todo.dueTime).format('ddd, DD MMM YYYY')
-
-  // set to empty array if key does not exists
-  if (!todoList.hasOwnProperty(key)) {
-    todoList[key] = []
-  }
-
-  // append new todo to current todo list
-  todoList[key].push(action.todo)
-
-  // Saving new todo list in storage
-  AsyncStorage.setItem(storageKey, JSON.stringify(todoList))
+  AsyncStorage.setItem(storageKey, JSON.stringify([...todoList, action.todo]))
     .then(done => {
-      store.dispatch(addTodoSuccess(key, action.todo))
+      store.dispatch(addTodoSuccess(action.todo))
     })
     .catch(error => {
       store.dispatch(addTodoFailure())
+    })
+}
+
+function toggleTodo(store, action) {
+  let {
+    todoList
+  } = store.getState()
+
+  // get new todo
+  const newTodos = todoList.map(todo => {
+    if (todo.uniqueId == action.uniqueId) {
+      return Object.assign({}, todo, {
+        completed: !todo.completed
+      })
+    }
+    return todo
+  })
+
+  AsyncStorage.setItem(storageKey, JSON.stringify(newTodos))
+    .then(done => {
+      store.dispatch(toggleTodoSuccess(action.uniqueId))
+    })
+    .catch(error => {
+      store.dispatch(toggleTodoFailure())
     })
 }
 
@@ -59,6 +73,9 @@ export default store => next => action => {
       break
     case Actions.ADD_TODO:
       addTodo(store, action)
+      break
+    case Actions.TOGGLE_TODO:
+      toggleTodo(store, action)
       break
   }
 }

@@ -17,12 +17,20 @@ export default class TodoList extends Component {
               <ListItem itemDivider key={key}>
                 <Text>{key}</Text>
               </ListItem>
+              {this.props.todoList[key].length == 0 &&
+                <ListItem>
+                  <Body>
+                    <Text>{key} has no todos</Text>
+                  </Body>
+                </ListItem>
+              }
               {this.props.todoList[key].map((todo, index) => {
                 return (
-                  <ListItem key={index}>
+                  <ListItem key={index} onPress={() => this.props.toggleTodo(todo.uniqueId)}>
                     <CheckBox
                       color="green"
                       checked={todo.completed}
+                      onPress={() => this.props.toggleTodo(todo.uniqueId)}
                     />
                     <Body>
                       <Text style={todo.completed ? StyleSheet.flatten(styles.crossText) : StyleSheet.flatten('')}>

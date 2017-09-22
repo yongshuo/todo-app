@@ -37,10 +37,9 @@ export function addTodo(todo) {
   }
 }
 
-export function addTodoSuccess(key, todo) {
+export function addTodoSuccess(todo) {
   return {
     type: Actions.ADD_TODO_SUCCESS,
-    key,
     todo
   }
 }
@@ -51,19 +50,17 @@ export function addTodoFailure() {
   }
 }
 
-export function toggleTodo(key, index) {
+export function toggleTodo(uniqueId) {
   return {
     type: Actions.TOGGLE_TODO,
-    key,
-    index
+    uniqueId
   }
 }
 
-export function toggleTodoSuccess(key, index) {
+export function toggleTodoSuccess(uniqueId) {
   return {
     type: Actions.TOGGLE_TODO_SUCCESS,
-    key,
-    index
+    uniqueId
   }
 }
 

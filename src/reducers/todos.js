@@ -1,22 +1,24 @@
 import {Actions} from '../actions'
 import {combineReducers} from 'redux'
-import {cloneTodoList} from '../utils/TodoHelper'
 
-export function todoList(state = {}, action) {
-  let clone = {}
+export function todoList(state = [], action) {
   switch (action.type) {
   case Actions.LOAD_TODO_LIST_SUCCESS:
     return action.todoList
   case Actions.ADD_TODO_SUCCESS:
-    clone = cloneTodoList(state)
-    clone[action.key].push(action.todo)
-
-    return clone
+    return [
+      ...state,
+      action.todo
+    ]
   case Actions.TOGGLE_TODO_SUCCESS:
-    clone = cloneTodoList(state)
-    clone[action.key][action.index].completed = !state[action.key][action.index].completed
-
-    return clone
+    return state.map(todo => {
+      if (todo.uniqueId == action.uniqueId) {
+        return Object.assign({}, todo, {
+          completed: !todo.completed
+        })
+      }
+      return todo
+    })
   default:
     return state
   }

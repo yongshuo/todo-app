@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {addTodo} from '../actions'
+import {addTodo, clearNotification} from '../actions'
 import DatePicker from '../components/DatePicker'
 import {
   Container,
@@ -15,8 +15,10 @@ import {
   InputGroup,
   Textarea,
   Button,
-  Text
+  Text,
+  Toast
 } from 'native-base'
+import {generateUniqueId} from '../utils/TodoHelper'
 
 class AddTodoContainer extends Component {
   constructor(props) {
@@ -48,8 +50,11 @@ class AddTodoContainer extends Component {
     actions.addTodo({
       dueTime: this.state.date,
       text: this.state.text,
+      uniqueId: generateUniqueId(),
       completed: false
     })
+
+    this.props.navigator.pop()
   }
 
   render() {
@@ -102,7 +107,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
-      addTodo
+      addTodo,
+      clearNotification
     }, dispatch)
   }
 }
