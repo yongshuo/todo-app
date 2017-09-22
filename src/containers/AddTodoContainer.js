@@ -91,15 +91,11 @@ class AddTodoContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   const {
-    addingTodo,
-    addTodoFailure,
-    addTodoSuccess
+    addTodoNotification
   } = state
 
   return {
-    addingTodo,
-    addTodoFailure,
-    addTodoSuccess
+    addTodoNotification
   }
 }
 

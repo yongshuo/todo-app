@@ -15,8 +15,8 @@ export function filterTodoList(todoList, activeOnly = false) {
   const dateFormat = 'DD/MM/YYYY'
 
   let finalTodoList = {
-    overDueTime: [],
-    today: []
+    Overdue: [],
+    Today: []
   }
 
   // for each available key
@@ -26,10 +26,10 @@ export function filterTodoList(todoList, activeOnly = false) {
       if (!activeOnly || todo.completed == false) {
         if (moment(todo.dueTime) < moment()) {
           // past due time
-          finalTodoList.overDueTime.push(todo)
+          finalTodoList.Overdue.push(todo)
         } else if (moment(todo.dueTime).format(dateFormat) == moment().format(dateFormat)) {
           // today
-          finalTodoList.today.push(todo)
+          finalTodoList.Today.push(todo)
         } else {
           const key = moment(todo.dueTime).format(dateFormat)
           // if key does not exists

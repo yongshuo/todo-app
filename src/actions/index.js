@@ -7,7 +7,8 @@ export const Actions = {
   ADD_TODO_FAILURE: 'ADD_TODO_FAILURE',
   TOGGLE_TODO: 'TOGGLE_TODO',
   TOGGLE_TODO_SUCCESS: 'TOGGLE_TODO_SUCCESS',
-  TOGGLE_TODO_FAILURE: 'TOGGLE_TODO_FAILURE'
+  TOGGLE_TODO_FAILURE: 'TOGGLE_TODO_FAILURE',
+  CLEAR_NOTIFICATION: 'CLEAR_NOTIFICATION'
 }
 
 export function loadTodoList() {
@@ -69,5 +70,11 @@ export function toggleTodoSuccess(key, index) {
 export function toggleTodoFailure() {
   return {
     type: Actions.TOGGLE_TODO_FAILURE
+  }
+}
+
+export function clearNotification() {
+  return {
+    type: Actions.CLEAR_NOTIFICATION
   }
 }

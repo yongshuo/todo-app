@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { List, ListItem, Body, Text, CheckBox, Container } from 'native-base'
+import { List, ListItem, Body, Text, CheckBox, Container, Card, CardItem, Right, Button, Icon, Left} from 'native-base'
 import {StyleSheet} from 'react-native'
 import {View} from 'react-native'
 

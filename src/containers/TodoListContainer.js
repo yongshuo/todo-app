@@ -55,15 +55,17 @@ class TodoListContainer extends Component {
 
     const allTodoList = filterTodoList(todoList)
     const activeTodoList = filterTodoList(todoList, activeOnly = true)
-    
+
     return (
       <Container>
         <Header />
         <Tabs initialPage={0}>
           <Tab heading="All">
-            <TodoList
-              todoList={allTodoList}
-            />
+            <Content>
+              <TodoList
+                todoList={allTodoList}
+              />
+            </Content>
           </Tab>
           <Tab heading="Active">
             <Content>
@@ -86,18 +88,12 @@ class TodoListContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   const {
-    todoListLoading,
-    todoListLoadFailure,
-    togglingTodo,
-    toggleTodoFailure,
+    todoListNotification,
     todoList
   } = state
 
   return {
-    todoListLoading,
-    todoListLoadFailure,
-    togglingTodo,
-    toggleTodoFailure,
+    todoListNotification,
     todoList
   }
 }
