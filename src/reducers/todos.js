@@ -20,9 +20,9 @@ export function todoList(state = [], action) {
       return todo
     })
   case Actions.DELETE_TODO_SUCCESS:
-    return state.slice().filter(todo => {
+    return state.slice().filter(todo =>
       !action.uniqueIds.includes(todo.uniqueId)
-    })
+    )
   default:
     return state
   }

@@ -15,7 +15,6 @@ import {
 const storageKey = 'todoApp'
 
 function retrieveTodoList(store) {
-  console.log(store.getState())
   AsyncStorage.getItem(storageKey)
     .then(todoList => {
       if (todoList != null) {
@@ -75,9 +74,9 @@ function clearTodos(store, action) {
     todoList
   } = store.getState()
 
-  const newTodos = todoList.splice().filter(todo => {
+  const newTodos = todoList.slice().filter(todo =>
     !action.uniqueIds.includes(todo.uniqueId)
-  })
+  )
 
   AsyncStorage.setItem(storageKey, JSON.stringify(newTodos))
     .then(done => {
