@@ -16,7 +16,8 @@ import {
 } from 'native-base'
 import {
   loadTodoList,
-  toggleTodo
+  toggleTodo,
+  deleteTodo
 } from '../actions'
 import TodoList from '../components/TodoList'
 import AddTodoContainer from './AddTodoContainer'
@@ -27,6 +28,7 @@ class TodoListContainer extends Component {
     super(props)
     this.navigateToAddTodoPage = this.navigateToAddTodoPage.bind(this)
     this.toggleTodo = this.toggleTodo.bind(this)
+    this.clearTodos = this.clearTodos.bind(this)
   }
 
   componentWillMount() {
@@ -37,6 +39,11 @@ class TodoListContainer extends Component {
   toggleTodo(uniqueId) {
     const {actions} = this.props
     actions.toggleTodo(uniqueId)
+  }
+
+  clearTodos(uniqueIds) {
+    const {actions} = this.props
+    actions.deleteTodo(uniqueIds)
   }
 
   navigateToAddTodoPage() {
@@ -68,6 +75,7 @@ class TodoListContainer extends Component {
               <TodoList
                 todoList={allTodoList}
                 toggleTodo={this.toggleTodo}
+                clearTodos={this.clearTodos}
               />
             </Content>
           </Tab>
@@ -76,6 +84,7 @@ class TodoListContainer extends Component {
               <TodoList
                 todoList={activeTodoList}
                 toggleTodo={this.toggleTodo}
+                clearTodos={this.clearTodos}
               />
             </Content>
           </Tab>
@@ -106,7 +115,8 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
       loadTodoList,
-      toggleTodo
+      toggleTodo,
+      deleteTodo
     }, dispatch)
   }
 }

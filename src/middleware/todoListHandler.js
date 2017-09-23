@@ -7,12 +7,15 @@ import {
   addTodoSuccess,
   addTodoFailure,
   toggleTodoSuccess,
-  toggleTodoFailure
+  toggleTodoFailure,
+  deleteTodoSuccess,
+  deleteTodoFailure
 } from '../actions'
 
 const storageKey = 'todoApp'
 
 function retrieveTodoList(store) {
+  console.log(store.getState())
   AsyncStorage.getItem(storageKey)
     .then(todoList => {
       if (todoList != null) {
@@ -67,6 +70,24 @@ function toggleTodo(store, action) {
     })
 }
 
+function clearTodos(store, action) {
+  let {
+    todoList
+  } = store.getState()
+
+  const newTodos = todoList.splice().filter(todo => {
+    !action.uniqueIds.includes(todo.uniqueId)
+  })
+
+  AsyncStorage.setItem(storageKey, JSON.stringify(newTodos))
+    .then(done => {
+      store.dispatch(deleteTodoSuccess(action.uniqueIds))
+    })
+    .catch(error => {
+      store.dispatch(deleteTodoFailure())
+    })
+}
+
 export default store => next => action => {
   next(action)
 
@@ -79,6 +100,9 @@ export default store => next => action => {
       break
     case Actions.TOGGLE_TODO:
       toggleTodo(store, action)
+      break
+    case Actions.DELETE_TODO:
+      clearTodos(store, action)
       break
   }
 }
