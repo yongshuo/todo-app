@@ -16,7 +16,10 @@ import {
   Textarea,
   Button,
   Text,
-  Toast
+  Toast,
+  Left,
+  Right,
+  Icon
 } from 'native-base'
 import {generateUniqueId} from '../utils/TodoHelper'
 
@@ -29,7 +32,8 @@ class AddTodoContainer extends Component {
 
     this.state = {
       date: new Date(),
-      text: ''
+      text: '',
+      savingNote: false
     }
   }
 
@@ -47,23 +51,41 @@ class AddTodoContainer extends Component {
 
   saveTodo() {
     const {actions} = this.props
+
+    this.setState({
+      savingNote: true
+    })
+
     actions.addTodo({
       dueTime: this.state.date,
       text: this.state.text,
       uniqueId: generateUniqueId(),
       completed: false
+    }, callback = () => {
+        this.props.navigator.pop()
+        this.setState({
+          savingNote: false
+        })
     })
-
-    this.props.navigator.pop()
   }
 
   render() {
     return (
       <Container>
         <Header>
+          <Left>
+            <Button transparent onPress={() => {this.props.navigator.pop()}}>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
           <Body>
             <Title>{this.props.title}</Title>
           </Body>
+          <Right>
+            <Button transparent onPress={this.saveTodo}>
+              <Text>Save</Text>
+            </Button>
+          </Right>
         </Header>
           <Content padder>
             <DatePicker
@@ -83,11 +105,6 @@ class AddTodoContainer extends Component {
                 style={{flex: 1.0, height: 200}}
               />
             </InputGroup>
-
-            <Button success block onPress={this.saveTodo} disabled={this.props.addingTodo}>
-              <Text>Save</Text>
-            </Button>
-
           </Content>
       </Container>
     )

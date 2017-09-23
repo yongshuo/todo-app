@@ -30,10 +30,11 @@ export function loadTodoListFailure() {
   }
 }
 
-export function addTodo(todo) {
+export function addTodo(todo, callback = undefined) {
   return {
     type: Actions.ADD_TODO,
-    todo
+    todo,
+    callback
   }
 }
 

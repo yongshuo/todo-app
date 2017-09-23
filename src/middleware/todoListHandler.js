@@ -34,6 +34,9 @@ function addTodo(store, action) {
   AsyncStorage.setItem(storageKey, JSON.stringify([...todoList, action.todo]))
     .then(done => {
       store.dispatch(addTodoSuccess(action.todo))
+      if (action.callback && typeof(action.callback) === 'function') {
+        action.callback()
+      }
     })
     .catch(error => {
       store.dispatch(addTodoFailure())
