@@ -42,10 +42,11 @@ class TodoListContainer extends Component {
   navigateToAddTodoPage() {
     this.props.navigator.push({
       index: 1,
-      title: 'Add Todo',
       component: AddTodoContainer,
+      navigationBarHidden: true,
       passProps: {
-
+        backTitle: 'Todo List',
+        title: 'Add Todo'
       }
     })
   }

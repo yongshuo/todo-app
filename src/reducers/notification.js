@@ -40,6 +40,7 @@ export function todoListNotification(state = [], action) {
       if (noti.index != action.index) {
         return Object.assign({}, noti)
       }
+      return noti
     })
   case Actions.LOAD_TODO_LIST:
   case Actions.LOAD_TODO_LIST_SUCCESS:
@@ -47,6 +48,7 @@ export function todoListNotification(state = [], action) {
       if (noti.index != TODO_APP_NOTIFICATIONS.loadTodoFailure.index) {
         return Object.assign({}, noti)
       }
+      return noti
     })
   case Actions.TOGGLE_TODO:
   case Actions.TOGGLE_TODO_SUCCESS:
@@ -54,6 +56,7 @@ export function todoListNotification(state = [], action) {
       if (noti.index != TODO_APP_NOTIFICATIONS.toggleTodoFailure.index) {
         return Object.assign({}, noti)
       }
+      return noti
     })
   default:
     return state
@@ -79,12 +82,14 @@ export function addTodoNotification(state = [], action) {
       ) {
         return Object.assign({}, noti)
       }
+      return noti
     })
   case Actions.CLEAR_NOTIFICATION:
     return state.map(noti => {
       if (noti.index != action.index) {
         return Object.assign({}, noti)
       }
+      return noti
     })
   default:
     return state
