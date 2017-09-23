@@ -36,27 +36,18 @@ export function todoListNotification(state = [], action) {
       TODO_APP_NOTIFICATIONS.toggleTodoFailure
     ]
   case Actions.CLEAR_NOTIFICATION:
-    return state.map(noti => {
-      if (noti.index != action.index) {
-        return Object.assign({}, noti)
-      }
-      return noti
+    return state.slice().filter(noti => {
+      noti.index != action.index
     })
   case Actions.LOAD_TODO_LIST:
   case Actions.LOAD_TODO_LIST_SUCCESS:
-    return state.map(noti => {
-      if (noti.index != TODO_APP_NOTIFICATIONS.loadTodoFailure.index) {
-        return Object.assign({}, noti)
-      }
-      return noti
+    return state.slice().filter(noti => {
+      noti.index != TODO_APP_NOTIFICATIONS.loadTodoFailure.index
     })
   case Actions.TOGGLE_TODO:
   case Actions.TOGGLE_TODO_SUCCESS:
-    return state.map(noti => {
-      if (noti.index != TODO_APP_NOTIFICATIONS.toggleTodoFailure.index) {
-        return Object.assign({}, noti)
-      }
-      return noti
+    return state.slice().filter(noti => {
+      noti.index != TODO_APP_NOTIFICATIONS.toggleTodoFailure.index
     })
   default:
     return state
@@ -76,20 +67,13 @@ export function addTodoNotification(state = [], action) {
       TODO_APP_NOTIFICATIONS.addTodoFailure
     ]
   case Actions.ADD_TODO:
-    return state.map(noti => {
-      if (noti.index != TODO_APP_NOTIFICATIONS.addTodoSuccess.index &&
-          noti.index != TODO_APP_NOTIFICATIONS.addTodoFailure.index
-      ) {
-        return Object.assign({}, noti)
-      }
-      return noti
+    return state.slice().filter(noti => {
+      noti.index != TODO_APP_NOTIFICATIONS.addTodoSuccess.index &&
+      noti.index != TODO_APP_NOTIFICATIONS.addTodoFailure.index
     })
   case Actions.CLEAR_NOTIFICATION:
-    return state.map(noti => {
-      if (noti.index != action.index) {
-        return Object.assign({}, noti)
-      }
-      return noti
+    return state.slice().filter(noti => {
+      noti.index != action.index
     })
   default:
     return state

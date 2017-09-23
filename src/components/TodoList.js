@@ -1,7 +1,21 @@
 import React, {Component} from 'react'
-import { List, ListItem, Body, Text, CheckBox, Container, Card, CardItem, Right, Button, Icon, Left} from 'native-base'
 import {StyleSheet} from 'react-native'
 import {View} from 'react-native'
+import {
+  List,
+  ListItem,
+  Body,
+  Text,
+  CheckBox,
+  Container,
+  Card,
+  CardItem,
+  Right,
+  Button,
+  Icon,
+  Left,
+  ActionSheet
+} from 'native-base'
 
 export default class TodoList extends Component {
   constructor(props) {
@@ -15,12 +29,38 @@ export default class TodoList extends Component {
           return (
             <View key={key}>
               <ListItem itemDivider key={key}>
-                <Text>{key}</Text>
+                <Left>
+                  <Text>{key}</Text>
+                </Left>
+                <Right>
+                  {this.props.todoList[key].length > 0 &&
+                    <Button
+                      transparent
+                      small
+                      onPress={() =>
+                        ActionSheet.show(
+                          {
+                            options: ["Delete", "Cancel"],
+                            cancelButtonIndex: 1,
+                            destructiveButtonIndex: 0,
+                            title: `Are you sure to delete todos in group ${key} ?`
+                          },
+                          buttonIndex => {
+                            if (buttonIndex == 0) {
+                              this.props.clearTodos(this.props.todoList[key].map(todo => todo.uniqueId))
+                            }
+                          }
+                        )
+                      }>
+                      <Icon name="trash" color="red" />
+                    </Button>
+                  }
+                </Right>
               </ListItem>
               {this.props.todoList[key].length == 0 &&
                 <ListItem>
                   <Body>
-                    <Text>{key} has no todos</Text>
+                    <Text note>No notes for group {key}</Text>
                   </Body>
                 </ListItem>
               }

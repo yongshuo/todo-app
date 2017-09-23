@@ -8,7 +8,10 @@ export const Actions = {
   TOGGLE_TODO: 'TOGGLE_TODO',
   TOGGLE_TODO_SUCCESS: 'TOGGLE_TODO_SUCCESS',
   TOGGLE_TODO_FAILURE: 'TOGGLE_TODO_FAILURE',
-  CLEAR_NOTIFICATION: 'CLEAR_NOTIFICATION'
+  CLEAR_NOTIFICATION: 'CLEAR_NOTIFICATION',
+  DELETE_TODO: 'DELETE_TODO',
+  DELETE_TODO_FAILURE: 'DELETE_TODO_FAILURE',
+  DELETE_TODO_SUCCESS: 'DELETE_TODO_SUCCESS'
 }
 
 export function loadTodoList() {
@@ -74,5 +77,25 @@ export function toggleTodoFailure() {
 export function clearNotification() {
   return {
     type: Actions.CLEAR_NOTIFICATION
+  }
+}
+
+export function deleteTodo(uniqueIds) {
+  return {
+    type: Actions.DELETE_TODO,
+    uniqueIds
+  }
+}
+
+export function deleteTodoSuccess(uniqueIds) {
+  return {
+    type: Actions.DELETE_TODO_SUCCESS,
+    uniqueIds
+  }
+}
+
+export function deleteTodoFailure() {
+  return {
+    type: Actions.DELETE_TODO_FAILURE
   }
 }
