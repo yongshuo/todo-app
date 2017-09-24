@@ -15,7 +15,6 @@ import {
   Fab
 } from 'native-base'
 import {
-  loadTodoList,
   toggleTodo,
   deleteTodo
 } from '../actions'
@@ -29,11 +28,6 @@ class TodoListContainer extends Component {
     this.navigateToAddTodoPage = this.navigateToAddTodoPage.bind(this)
     this.toggleTodo = this.toggleTodo.bind(this)
     this.clearTodos = this.clearTodos.bind(this)
-  }
-
-  componentWillMount() {
-    const {actions} = this.props
-    actions.loadTodoList()
   }
 
   toggleTodo(uniqueId) {
@@ -101,12 +95,10 @@ class TodoListContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   const {
-    todoListNotification,
     todoList
   } = state
 
   return {
-    todoListNotification,
     todoList
   }
 }
@@ -114,7 +106,6 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
-      loadTodoList,
       toggleTodo,
       deleteTodo
     }, dispatch)
