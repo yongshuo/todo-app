@@ -23,16 +23,18 @@ import {
 } from 'native-base'
 import {generateUniqueId} from '../utils/TodoHelper'
 
-class AddTodoContainer extends Component {
+class TodoContainer extends Component {
   constructor(props) {
     super(props)
     this.onDateChange = this.onDateChange.bind(this)
     this.updateText = this.updateText.bind(this)
     this.saveTodo = this.saveTodo.bind(this)
-    
+
     this.state = {
-      date: new Date(),
-      text: ''
+      date: props.dueTime || new Date(),
+      text: props.text || '',
+      uniqueId: props.uniqueId || generateUniqueId(),
+      completed: props.completed || false
     }
   }
 
@@ -49,13 +51,15 @@ class AddTodoContainer extends Component {
   }
 
   saveTodo() {
-    const {actions} = this.props
+    const {
+      saveAction
+    } = this.props
 
-    actions.addTodo({
+    saveAction({
       dueTime: this.state.date,
       text: this.state.text,
-      uniqueId: generateUniqueId(),
-      completed: false
+      uniqueId: this.state.uniqueId,
+      completed: this.state.completed
     })
 
     this.props.navigator.pop()
@@ -94,6 +98,7 @@ class AddTodoContainer extends Component {
                 placeholder="Enter your todo here."
                 autoFocus={false}
                 onChangeText={this.updateText}
+                value={this.state.text}
                 style={{flex: 1.0, height: 200}}
               />
             </InputGroup>
@@ -117,4 +122,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddTodoContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(TodoContainer)

@@ -82,7 +82,9 @@ export default class TodoList extends Component {
                     rightOpenValue={-70}
                     leftOpenValue={70}
                     left={
-                      <Button info onPress={() => alert('Edit feature is in progress')}>
+                      <Button
+                        info
+                        onPress={() => this.props.navigateToEditTodoPage(todo)}>
                         <Icon active name="clipboard" />
                       </Button>
                     }
@@ -121,10 +123,12 @@ export default class TodoList extends Component {
 const styles = StyleSheet.create({
   swipeContainer: {
     flexDirection: 'row',
-    flex: 1
+    flex: 1,
+    height: 35
   },
   checkboxContainer: {
-    flex: 0.1
+    flex: 0.1,
+    alignSelf: 'center'
   },
   todoContainer: {
     flex: 0.9,
