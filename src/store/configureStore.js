@@ -1,6 +1,6 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunkMiddleware from 'redux-thunk'
-
+import {autoRehydrate} from 'redux-persist'
 import todoListHandler from '../middleware/todoListHandler'
 
 import rootReducer from '../reducers'
@@ -10,7 +10,8 @@ function createStoreWithMiddleware(store) {
     applyMiddleware(
       thunkMiddleware,
       todoListHandler
-    )
+    ),
+    autoRehydrate()
   )(store)
 }
 

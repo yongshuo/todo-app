@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {addTodo, clearNotification} from '../actions'
+import {addTodo} from '../actions'
 import DatePicker from '../components/DatePicker'
 import {
   Container,
@@ -29,11 +29,10 @@ class AddTodoContainer extends Component {
     this.onDateChange = this.onDateChange.bind(this)
     this.updateText = this.updateText.bind(this)
     this.saveTodo = this.saveTodo.bind(this)
-
+    
     this.state = {
       date: new Date(),
-      text: '',
-      savingNote: false
+      text: ''
     }
   }
 
@@ -52,21 +51,14 @@ class AddTodoContainer extends Component {
   saveTodo() {
     const {actions} = this.props
 
-    this.setState({
-      savingNote: true
-    })
-
     actions.addTodo({
       dueTime: this.state.date,
       text: this.state.text,
       uniqueId: generateUniqueId(),
       completed: false
-    }, callback = () => {
-        this.props.navigator.pop()
-        this.setState({
-          savingNote: false
-        })
     })
+
+    this.props.navigator.pop()
   }
 
   render() {
@@ -112,20 +104,15 @@ class AddTodoContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const {
-    addTodoNotification
-  } = state
-
   return {
-    addTodoNotification
+
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
-      addTodo,
-      clearNotification
+      addTodo
     }, dispatch)
   }
 }
