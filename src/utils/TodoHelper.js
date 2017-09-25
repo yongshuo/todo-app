@@ -8,7 +8,7 @@ export function filterTodoList(todoList, activeOnly = false) {
     Today: []
   }
 
-  todoList.forEach(todo => {
+  todoList.sort((t1, t2) => moment(t1.dueTime) - moment(t2.dueTime)).forEach(todo => {
     if (!activeOnly || todo.completed == false) {
       if (moment(todo.dueTime) < moment()) {
         finalTodoList.Overdue.push(todo)
