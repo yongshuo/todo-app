@@ -16,10 +16,12 @@ import {
 } from 'native-base'
 import {
   toggleTodo,
-  deleteTodo
+  deleteTodo,
+  addTodo,
+  updateTodo
 } from '../actions'
 import TodoList from '../components/TodoList'
-import AddTodoContainer from './AddTodoContainer'
+import TodoContainer from './TodoContainer'
 import {filterTodoList} from '../utils/TodoHelper'
 
 class TodoListContainer extends Component {
@@ -28,6 +30,8 @@ class TodoListContainer extends Component {
     this.navigateToAddTodoPage = this.navigateToAddTodoPage.bind(this)
     this.toggleTodo = this.toggleTodo.bind(this)
     this.clearTodos = this.clearTodos.bind(this)
+    this.navigateTodoPage = this.navigateTodoPage.bind(this)
+    this.navigateToEditTodoPage = this.navigateToEditTodoPage.bind(this)
   }
 
   toggleTodo(uniqueId) {
@@ -40,15 +44,31 @@ class TodoListContainer extends Component {
     actions.deleteTodo(uniqueIds)
   }
 
-  navigateToAddTodoPage() {
+  navigateTodoPage(passProps) {
     this.props.navigator.push({
       index: 1,
-      component: AddTodoContainer,
+      component: TodoContainer,
       navigationBarHidden: true,
-      passProps: {
-        backTitle: 'Todo List',
-        title: 'Add Todo'
-      }
+      passProps: passProps
+    })
+  }
+
+  navigateToAddTodoPage() {
+    const {actions} = this.props
+
+    this.navigateTodoPage({
+      title: 'Add Todo',
+      saveAction: actions.addTodo
+    })
+  }
+
+  navigateToEditTodoPage(todo) {
+    const {actions} = this.props
+
+    this.navigateTodoPage({
+      ...todo,
+      title: 'Edit Todo',
+      saveAction: actions.updateTodo
     })
   }
 
@@ -63,31 +83,35 @@ class TodoListContainer extends Component {
     return (
       <Container>
         <Header />
-        <Tabs initialPage={0}>
+        <Tabs initialPage={0} locked>
           <Tab heading="All">
-            <Content>
+            <Content scrollEnabled={false}>
               <TodoList
                 todoList={allTodoList}
                 toggleTodo={this.toggleTodo}
                 clearTodos={this.clearTodos}
+                navigateToEditTodoPage={this.navigateToEditTodoPage}
               />
             </Content>
           </Tab>
           <Tab heading="Active">
-            <Content>
+            <Content scrollEnabled={false}>
               <TodoList
                 todoList={activeTodoList}
                 toggleTodo={this.toggleTodo}
                 clearTodos={this.clearTodos}
+                navigateToEditTodoPage={this.navigateToEditTodoPage}
               />
             </Content>
           </Tab>
         </Tabs>
 
-        <Fab direction="up" position="bottomRight" onPress={this.navigateToAddTodoPage}>
+        <Fab
+          direction="up"
+          position="bottomRight"
+          onPress={this.navigateToAddTodoPage}>
           <Icon name="md-add" />
         </Fab>
-
       </Container>
     )
   }
@@ -107,7 +131,9 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
       toggleTodo,
-      deleteTodo
+      deleteTodo,
+      addTodo,
+      updateTodo
     }, dispatch)
   }
 }

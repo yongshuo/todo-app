@@ -21,6 +21,16 @@ export function todoList(state = [], action) {
     return state.slice().filter(todo =>
       !action.uniqueIds.includes(todo.uniqueId)
     )
+  case Actions.UPDATE_TODO:
+    return state.map(todo => {
+      if (todo.uniqueId == action.todo.uniqueId) {
+        return Object.assign({}, todo, {
+          dueTime: action.todo.dueTime,
+          text: action.todo.text
+        })
+      }
+      return todo
+    })
   default:
     return state
   }

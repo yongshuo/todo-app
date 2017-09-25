@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import {StyleSheet} from 'react-native'
-import {View} from 'react-native'
+import {StyleSheet, TouchableOpacity} from 'react-native'
 import {
   List,
   ListItem,
@@ -14,12 +13,37 @@ import {
   Button,
   Icon,
   Left,
-  ActionSheet
+  ActionSheet,
+  SwipeRow,
+  Content,
+  View
 } from 'native-base'
 
 export default class TodoList extends Component {
   constructor(props) {
     super(props)
+    this.confirmDeletion = this.confirmDeletion.bind(this)
+  }
+
+  confirmDeletion(key, uniqueId = null) {
+    ActionSheet.show(
+      {
+        options: ["Delete", "Cancel"],
+        cancelButtonIndex: 1,
+        destructiveButtonIndex: 0,
+        title: `Are you sure to delete todos ?`
+      },
+      buttonIndex => {
+        if (buttonIndex == 0) {
+          if (uniqueId == null) {
+            this.props.clearTodos(this.props.todoList[key].map(todo => todo.uniqueId))
+          } else {
+            this.props.clearTodos([uniqueId])
+          }
+
+        }
+      }
+    )
   }
 
   render() {
@@ -37,22 +61,9 @@ export default class TodoList extends Component {
                     <Button
                       transparent
                       small
-                      onPress={() =>
-                        ActionSheet.show(
-                          {
-                            options: ["Delete", "Cancel"],
-                            cancelButtonIndex: 1,
-                            destructiveButtonIndex: 0,
-                            title: `Are you sure to delete todos in group ${key} ?`
-                          },
-                          buttonIndex => {
-                            if (buttonIndex == 0) {
-                              this.props.clearTodos(this.props.todoList[key].map(todo => todo.uniqueId))
-                            }
-                          }
-                        )
-                      }>
-                      <Icon name="trash" color="red" />
+                      danger
+                      onPress={() => this.confirmDeletion(key)}>
+                      <Icon name="trash" />
                     </Button>
                   }
                 </Right>
@@ -66,18 +77,39 @@ export default class TodoList extends Component {
               }
               {this.props.todoList[key].map((todo, index) => {
                 return (
-                  <ListItem key={index} onPress={() => this.props.toggleTodo(todo.uniqueId)}>
-                    <CheckBox
-                      color="green"
-                      checked={todo.completed}
-                      onPress={() => this.props.toggleTodo(todo.uniqueId)}
-                    />
-                    <Body>
-                      <Text style={todo.completed ? StyleSheet.flatten(styles.crossText) : StyleSheet.flatten('')}>
-                        {todo.text}
-                      </Text>
-                    </Body>
-                  </ListItem>
+                  <SwipeRow
+                    key={index}
+                    rightOpenValue={-70}
+                    leftOpenValue={70}
+                    left={
+                      <Button
+                        info
+                        onPress={() => this.props.navigateToEditTodoPage(todo)}>
+                        <Icon active name="clipboard" />
+                      </Button>
+                    }
+                    body={
+                      <View style={StyleSheet.flatten(styles.swipeContainer)} onPress={() => this.props.toggleTodo(todo.uniqueId)}>
+                        <View style={StyleSheet.flatten(styles.checkboxContainer)}>
+                          <CheckBox
+                            color="green"
+                            checked={todo.completed}
+                            onPress={() => this.props.toggleTodo(todo.uniqueId)}
+                          />
+                        </View>
+                        <TouchableOpacity style={StyleSheet.flatten(styles.todoContainer)} onPress={() => this.props.toggleTodo(todo.uniqueId)}>
+                          <Text style={todo.completed ? StyleSheet.flatten(styles.crossText) : StyleSheet.flatten('')}>
+                            {todo.text}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    }
+                    right={
+                      <Button danger onPress={() => this.confirmDeletion(key, todo.uniqueId)}>
+                        <Icon active name="trash" />
+                      </Button>
+                    }
+                  />
                 )
               })}
             </View>
@@ -89,10 +121,20 @@ export default class TodoList extends Component {
 }
 
 const styles = StyleSheet.create({
+  swipeContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    height: 35
+  },
+  checkboxContainer: {
+    flex: 0.1,
+    alignSelf: 'center'
+  },
+  todoContainer: {
+    flex: 0.9,
+    alignSelf: 'center'
+  },
   crossText: {
     textDecorationLine: 'line-through'
-  },
-  noNote: {
-    padding: 15
   }
 })
