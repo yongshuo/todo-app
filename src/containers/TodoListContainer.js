@@ -85,7 +85,7 @@ class TodoListContainer extends Component {
         <Header />
         <Tabs initialPage={0} locked>
           <Tab heading="All">
-            <Content scrollEnabled={false}>
+            <Content>
               <TodoList
                 todoList={allTodoList}
                 toggleTodo={this.toggleTodo}
@@ -95,7 +95,7 @@ class TodoListContainer extends Component {
             </Content>
           </Tab>
           <Tab heading="Active">
-            <Content scrollEnabled={false}>
+            <Content>
               <TodoList
                 todoList={activeTodoList}
                 toggleTodo={this.toggleTodo}
