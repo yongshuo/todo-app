@@ -71,7 +71,7 @@ export default class TodoList extends Component {
               {this.props.todoList[key].length == 0 &&
                 <ListItem>
                   <Body>
-                    <Text note>No notes for group {key}</Text>
+                    <Text note>No todo available</Text>
                   </Body>
                 </ListItem>
               }
@@ -98,9 +98,16 @@ export default class TodoList extends Component {
                           />
                         </View>
                         <TouchableOpacity style={StyleSheet.flatten(styles.todoContainer)} onPress={() => this.props.toggleTodo(todo.uniqueId)}>
-                          <Text style={todo.completed ? StyleSheet.flatten(styles.crossText) : StyleSheet.flatten('')}>
-                            {todo.text}
-                          </Text>
+                          <View style={{flex:1.0, flexDirection: "row"}}>
+                            <View style={{flex: 0.7, alignSelf: 'center'}}>
+                              <Text style={todo.completed ? StyleSheet.flatten(styles.crossText) : StyleSheet.flatten('')}>
+                                {todo.text}
+                              </Text>
+                            </View>
+                            <View style={{flex: 0.3}}>
+                              <Text note style={{textAlign: 'right'}}>{todo.formattedDueTime}</Text>
+                            </View>
+                          </View>
                         </TouchableOpacity>
                       </View>
                     }
